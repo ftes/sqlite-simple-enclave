@@ -92,37 +92,6 @@ int sqlite3_memory_alarm(
 #endif
 
 /*
-** Set the soft heap-size limit for the library. Passing a zero or 
-** negative value indicates no limit.
-*/
-sqlite3_int64 sqlite3_soft_heap_limit64(sqlite3_int64 n){
-  sqlite3_int64 priorLimit;
-  sqlite3_int64 excess;
-  sqlite3_int64 nUsed;
-#ifndef SQLITE_OMIT_AUTOINIT
-  int rc = sqlite3_initialize();
-  if( rc ) return -1;
-#endif
-  sqlite3_mutex_enter(mem0.mutex);
-  priorLimit = mem0.alarmThreshold;
-  if( n<0 ){
-    sqlite3_mutex_leave(mem0.mutex);
-    return priorLimit;
-  }
-  mem0.alarmThreshold = n;
-  nUsed = sqlite3StatusValue(SQLITE_STATUS_MEMORY_USED);
-  mem0.nearlyFull = (n>0 && n<=nUsed);
-  sqlite3_mutex_leave(mem0.mutex);
-  excess = sqlite3_memory_used() - n;
-  if( excess>0 ) sqlite3_release_memory((int)(excess & 0x7fffffff));
-  return priorLimit;
-}
-void sqlite3_soft_heap_limit(int n){
-  if( n<0 ) n = 0;
-  sqlite3_soft_heap_limit64(n);
-}
-
-/*
 ** Initialize the memory allocation subsystem.
 */
 int sqlite3MallocInit(void){
@@ -183,14 +152,6 @@ void sqlite3MallocEnd(void){
   memset(&mem0, 0, sizeof(mem0));
 }
 
-/*
-** Return the amount of memory currently checked out.
-*/
-sqlite3_int64 sqlite3_memory_used(void){
-  sqlite3_int64 res, mx;
-  sqlite3_status64(SQLITE_STATUS_MEMORY_USED, &res, &mx, 0);
-  return res;
-}
 
 /*
 ** Return the maximum amount of memory that has ever been

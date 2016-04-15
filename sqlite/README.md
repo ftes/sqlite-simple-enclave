@@ -20,3 +20,4 @@ This hampers debugging and analyzing the code. Rather, the `tsrc/` contents are 
   d. `SQLITE_OMIT_SHARED_CACHE`
   e. `SQLITE_OMIT_PROGRESS_CALLBACK`
   f. possibly `SQLITE_TEMP_STORE=3` (no temp files, rather store in memory)
+  g. `SQLITE_OMIT_DEPRECATED`

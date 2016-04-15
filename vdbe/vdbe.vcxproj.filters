@@ -45,6 +45,12 @@
     <ClCompile Include="main_copy.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="malloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sqlite\global.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vdbe_t.h">

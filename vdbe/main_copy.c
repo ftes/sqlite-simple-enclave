@@ -126,9 +126,10 @@ int sqlite3_initialize(void){
       sqlite3_init_sqllog();
     }
 #endif
-    memset(&sqlite3BuiltinFunctions, 0, sizeof(sqlite3BuiltinFunctions));
-    sqlite3RegisterBuiltinFunctions();
-    if( sqlite3GlobalConfig.isPCacheInit==0 ){
+
+// FREDRIK BEGIN
+// no page cache in enclave
+/*	if( sqlite3GlobalConfig.isPCacheInit==0 ){
       rc = sqlite3PcacheInitialize();
     }
     if( rc==SQLITE_OK ){
@@ -143,6 +144,9 @@ int sqlite3_initialize(void){
       bRunExtraInit = 1;
 #endif
     }
+*/
+// FREDRIK END
+
     sqlite3GlobalConfig.inProgress = 0;
   }
   sqlite3_mutex_leave(sqlite3GlobalConfig.pInitMutex);
