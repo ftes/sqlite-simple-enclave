@@ -188,6 +188,7 @@
   <ItemGroup>
     <ClCompile Include="..\sqlite\global.c" />
     <ClCompile Include="..\sqlite\mem1.c" />
+    <ClCompile Include="..\sqlite\printf.c" />
     <ClCompile Include="edge_t.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="malloc.c" />

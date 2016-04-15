@@ -63,6 +63,9 @@
     <ClCompile Include="util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\sqlite\printf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vdbe.h">
