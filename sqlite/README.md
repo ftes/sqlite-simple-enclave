@@ -8,6 +8,7 @@ This hampers debugging and analyzing the code. Rather, the `tsrc/` contents are 
 
 # How this project was created
 1. Build regular SQLite source
+  a. add `"OPTS=-DSQLITE_OMIT_ANALYZE"` to nmake command line
 2. Copy all files from `tsrc/`
 3. Remove the following (avoid unnecessary dependencies)
   a. `tclsqlite.c`
