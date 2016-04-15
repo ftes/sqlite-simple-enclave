@@ -42,9 +42,6 @@
     <ClCompile Include="vdbesort.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main_copy.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="malloc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,7 +54,10 @@
     <ClCompile Include="..\sqlite\mem1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sqlite\status.c">
+    <ClCompile Include="status.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

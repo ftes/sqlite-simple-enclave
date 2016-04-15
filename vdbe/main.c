@@ -3,6 +3,99 @@
 #include "sqliteInt.h"
 
 /*
+** This API allows applications to modify the global configuration of
+** the SQLite library at run-time.
+**
+** This routine should only be called when there are no outstanding
+** database connections or memory allocations.  This routine is not
+** threadsafe.  Failure to heed these warnings can lead to unpredictable
+** behavior.
+*/
+int sqlite3_config(int op, ...){
+  va_list ap;
+  int rc = SQLITE_OK;
+
+  /* sqlite3_config() shall return SQLITE_MISUSE if it is invoked while
+  ** the SQLite library is in use. */
+  if( sqlite3GlobalConfig.isInit ) return SQLITE_MISUSE;
+
+  va_start(ap, op);
+  switch( op ){
+
+    /* Mutex configuration options are only available in a threadsafe
+    ** compile.
+    */
+
+    case SQLITE_CONFIG_MALLOC: {
+      /* EVIDENCE-OF: R-55594-21030 The SQLITE_CONFIG_MALLOC option takes a
+      ** single argument which is a pointer to an instance of the
+      ** sqlite3_mem_methods structure. The argument specifies alternative
+      ** low-level memory allocation routines to be used in place of the memory
+      ** allocation routines built into SQLite. */
+      sqlite3GlobalConfig.m = *va_arg(ap, sqlite3_mem_methods*);
+      break;
+    }
+    case SQLITE_CONFIG_GETMALLOC: {
+      /* EVIDENCE-OF: R-51213-46414 The SQLITE_CONFIG_GETMALLOC option takes a
+      ** single argument which is a pointer to an instance of the
+      ** sqlite3_mem_methods structure. The sqlite3_mem_methods structure is
+      ** filled with the currently defined memory allocation routines. */
+      if( sqlite3GlobalConfig.m.xMalloc==0 ) sqlite3MemSetDefault();
+      *va_arg(ap, sqlite3_mem_methods*) = sqlite3GlobalConfig.m;
+      break;
+    }
+    case SQLITE_CONFIG_MEMSTATUS: {
+      /* EVIDENCE-OF: R-61275-35157 The SQLITE_CONFIG_MEMSTATUS option takes
+      ** single argument of type int, interpreted as a boolean, which enables
+      ** or disables the collection of memory allocation statistics. */
+      sqlite3GlobalConfig.bMemstat = va_arg(ap, int);
+      break;
+    }
+    case SQLITE_CONFIG_SCRATCH: {
+      /* EVIDENCE-OF: R-08404-60887 There are three arguments to
+      ** SQLITE_CONFIG_SCRATCH: A pointer an 8-byte aligned memory buffer from
+      ** which the scratch allocations will be drawn, the size of each scratch
+      ** allocation (sz), and the maximum number of scratch allocations (N). */
+      sqlite3GlobalConfig.pScratch = va_arg(ap, void*);
+      sqlite3GlobalConfig.szScratch = va_arg(ap, int);
+      sqlite3GlobalConfig.nScratch = va_arg(ap, int);
+      break;
+    }
+ 
+    case SQLITE_CONFIG_LOOKASIDE: {
+      sqlite3GlobalConfig.szLookaside = va_arg(ap, int);
+      sqlite3GlobalConfig.nLookaside = va_arg(ap, int);
+      break;
+    }
+
+    case SQLITE_CONFIG_MMAP_SIZE: {
+      /* EVIDENCE-OF: R-58063-38258 SQLITE_CONFIG_MMAP_SIZE takes two 64-bit
+      ** integer (sqlite3_int64) values that are the default mmap size limit
+      ** (the default setting for PRAGMA mmap_size) and the maximum allowed
+      ** mmap size limit. */
+      sqlite3_int64 szMmap = va_arg(ap, sqlite3_int64);
+      sqlite3_int64 mxMmap = va_arg(ap, sqlite3_int64);
+      /* EVIDENCE-OF: R-53367-43190 If either argument to this option is
+      ** negative, then that argument is changed to its compile-time default.
+      **
+      ** EVIDENCE-OF: R-34993-45031 The maximum allowed mmap size will be
+      ** silently truncated if necessary so that it does not exceed the
+      ** compile-time maximum mmap size set by the SQLITE_MAX_MMAP_SIZE
+      ** compile-time option.
+      */
+      if( mxMmap<0 || mxMmap>SQLITE_MAX_MMAP_SIZE ){
+        mxMmap = SQLITE_MAX_MMAP_SIZE;
+      }
+      if( szMmap<0 ) szMmap = SQLITE_DEFAULT_MMAP_SIZE;
+      if( szMmap>mxMmap) szMmap = mxMmap;
+      sqlite3GlobalConfig.mxMmap = mxMmap;
+      sqlite3GlobalConfig.szMmap = szMmap;
+      break;
+    }
+  }
+}
+
+/*
 ** Initialize SQLite.  
 **
 ** This routine must be called to initialize the memory allocation,
