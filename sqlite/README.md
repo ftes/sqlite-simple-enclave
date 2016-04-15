@@ -15,7 +15,8 @@ This hampers debugging and analyzing the code. Rather, the `tsrc/` contents are 
   a. `ext/rtree/sqlite3rtree.h`
 5. Set the following macros (`Properties->Preprocessor->PreProcessor Definitions`)
   a. `SQLITE_CORE`
-  b. `SQLITE_THREADSAFE`
+  b. `SQLITE_THREADSAFE=0`
   c. `SQLITE_OMIT_LOAD_EXTENSION`
   d. `SQLITE_OMIT_SHARED_CACHE`
   e. `SQLITE_OMIT_PROGRESS_CALLBACK`
+  f. possibly `SQLITE_TEMP_STORE=3` (no temp files, rather store in memory)

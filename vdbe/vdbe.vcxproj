@@ -184,10 +184,18 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="vdbe.c" />
     <ClCompile Include="vdbe.cpp" />
+    <ClCompile Include="vdbeapi.c" />
+    <ClCompile Include="vdbeaux.c" />
+    <ClCompile Include="vdbeblob.c" />
+    <ClCompile Include="vdbemem.c" />
+    <ClCompile Include="vdbesort.c" />
     <ClCompile Include="vdbe_t.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="vdbe.h" />
+    <ClInclude Include="vdbeInt.h" />
     <ClInclude Include="vdbe_t.h" />
   </ItemGroup>
   <ItemGroup>
@@ -209,13 +217,11 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectName)_t.h;$(ProjectName)_t.c;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">vdbe.config.xml;%(AdditionalInputs)</AdditionalInputs>
     </CustomBuild>
+    <None Include="README.md" />
     <None Include="vdbe_private.pem" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="vdbe.config.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
