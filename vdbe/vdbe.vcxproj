@@ -101,7 +101,7 @@
       <Optimization>Disabled</Optimization>
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>../sqlite;$(SGXSDKInstallPath)include;$(SGXSDKInstallPath)include\tlibc;$(SGXSDKInstallPath)include\stlport;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SQLITE_CORE;SQLITE_THREADSAFE=0;SQLITE_OMIT_LOAD_EXTENSION;SQLITE_OMIT_SHARED_CACHE;SQLITE_OMIT_PROGRESS_CALLBACK;SQLITE_OMIT_DEPRECATED;SQLITE_WITHOUT_MSIZE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SQLITE_CORE;SQLITE_THREADSAFE=0;SQLITE_OMIT_LOAD_EXTENSION;SQLITE_OMIT_SHARED_CACHE;SQLITE_OMIT_PROGRESS_CALLBACK;SQLITE_OMIT_DEPRECATED;SQLITE_WITHOUT_MSIZE;SQLITE_OMIT_ANALYZE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>sgx_trts.lib;sgx_tstdc.lib;sgx_tservice.lib;sgx_tcrypto_opt.lib</AdditionalDependencies>
