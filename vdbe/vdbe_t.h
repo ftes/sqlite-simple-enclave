@@ -16,6 +16,7 @@ extern "C" {
 
 void dummy_root_ecall();
 
+sgx_status_t SGX_CDECL log_ocall(int errCode, char* formattedString);
 
 #ifdef __cplusplus
 }

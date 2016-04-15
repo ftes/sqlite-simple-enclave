@@ -27,6 +27,11 @@
 
 
 
+typedef struct ms_log_ocall_t {
+	int ms_errCode;
+	char* ms_formattedString;
+} ms_log_ocall_t;
+
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 4127)
@@ -36,13 +41,6 @@
 static sgx_status_t SGX_CDECL sgx_dummy_root_ecall(void* pms)
 {
 	sgx_status_t status = SGX_SUCCESS;
-
-#ifdef _MSC_VER
-	/* In case enclave `vdbe' doesn't call any tRTS function. */
-	volatile int force_link_trts = sgx_is_within_enclave(NULL, 0);
-	(void) force_link_trts; /* avoid compiler warning */
-#endif
-
 	if (pms != NULL) return SGX_ERROR_INVALID_PARAMETER;
 	dummy_root_ecall();
 	return status;
@@ -60,10 +58,40 @@ SGX_EXTERNC const struct {
 
 SGX_EXTERNC const struct {
 	size_t nr_ocall;
+	uint8_t entry_table[1][1];
 } g_dyn_entry_table = {
-	0,
+	1,
+	{
+		{0, },
+	}
 };
 
+
+sgx_status_t SGX_CDECL log_ocall(int errCode, char* formattedString)
+{
+	sgx_status_t status = SGX_SUCCESS;
+	size_t _len_formattedString = formattedString ? strlen(formattedString) + 1 : 0;
+
+	ms_log_ocall_t* ms;
+	OCALLOC(ms, ms_log_ocall_t*, sizeof(*ms));
+
+	ms->ms_errCode = errCode;
+	if (formattedString != NULL && sgx_is_within_enclave(formattedString, _len_formattedString)) {
+		OCALLOC(ms->ms_formattedString, char*, _len_formattedString);
+		memcpy(ms->ms_formattedString, formattedString, _len_formattedString);
+	} else if (formattedString == NULL) {
+		ms->ms_formattedString = NULL;
+	} else {
+		sgx_ocfree();
+		return SGX_ERROR_INVALID_PARAMETER;
+	}
+	
+	status = sgx_ocall(0, ms);
+
+
+	sgx_ocfree();
+	return status;
+}
 
 #ifdef _MSC_VER
 #pragma warning(pop)

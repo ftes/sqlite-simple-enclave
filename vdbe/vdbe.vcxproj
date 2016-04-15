@@ -189,6 +189,7 @@
     <ClCompile Include="..\sqlite\global.c" />
     <ClCompile Include="..\sqlite\mem1.c" />
     <ClCompile Include="..\sqlite\util.c" />
+    <ClCompile Include="edge_t.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="malloc.c" />
     <ClCompile Include="status.c" />

@@ -6,6 +6,8 @@ enclave {
 
     untrusted {
         /* define OCALLs here. */
-    
+
+		/* should a wstring be used here? */
+		void log_ocall(int errCode, [in, string] char* formattedString);
     };
 };

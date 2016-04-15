@@ -14,7 +14,7 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Generated Files">
-      <UniqueIdentifier>{791538c4-092d-4bc9-9b2c-5c13621420c8}</UniqueIdentifier>
+      <UniqueIdentifier>{4ac88e4d-0b5f-4796-a445-6ee391b42a1c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -299,6 +299,9 @@
     </ClCompile>
     <ClCompile Include="vdbe_u.c">
       <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="edge_u.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
