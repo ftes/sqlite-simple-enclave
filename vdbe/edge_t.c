@@ -15,7 +15,7 @@ void sqlite3_log(int iErrCode, const char *zFormat, ...) {
   needed = vsnprintf(NULL, 0, zFormat, args);
   formatted = (char*) malloc(needed);
   vsnprintf(formatted, needed, zFormat, args);
-  log_ocall(iErrCode, formatted);
+  sqlite3_log_ocall(iErrCode, formatted);
   free(formatted);
   va_end(args);
 }

@@ -29,6 +29,7 @@
 # Project config
 - additional include directory: `../sqlite`
 - set preprocessor macros as stated in `../sqlite/README.md`
+	- `SQLITE_WITHOUT_MSIZE`
 
 
 # Design changes

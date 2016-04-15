@@ -1,4 +1,6 @@
 enclave {
+	include "sqliteInt.h"
+
     trusted {
         /* define ECALLs here. */
 		public void dummy_root_ecall();
@@ -8,6 +10,9 @@ enclave {
         /* define OCALLs here. */
 
 		/* should a wstring be used here? */
-		void log_ocall(int errCode, [in, string] char* formattedString);
+		void sqlite3_log_ocall(int errCode, [in, string] char* formattedString);
+
+		/* does this leak sensitive information? */
+		void sqlite3SystemError_ocall([user_check] sqlite3 *db, int rc);
     };
 };

@@ -27,10 +27,15 @@
 
 
 
-typedef struct ms_log_ocall_t {
+typedef struct ms_sqlite3_log_ocall_t {
 	int ms_errCode;
 	char* ms_formattedString;
-} ms_log_ocall_t;
+} ms_sqlite3_log_ocall_t;
+
+typedef struct ms_sqlite3SystemError_ocall_t {
+	sqlite3* ms_db;
+	int ms_rc;
+} ms_sqlite3SystemError_ocall_t;
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -58,22 +63,23 @@ SGX_EXTERNC const struct {
 
 SGX_EXTERNC const struct {
 	size_t nr_ocall;
-	uint8_t entry_table[1][1];
+	uint8_t entry_table[2][1];
 } g_dyn_entry_table = {
-	1,
+	2,
 	{
+		{0, },
 		{0, },
 	}
 };
 
 
-sgx_status_t SGX_CDECL log_ocall(int errCode, char* formattedString)
+sgx_status_t SGX_CDECL sqlite3_log_ocall(int errCode, char* formattedString)
 {
 	sgx_status_t status = SGX_SUCCESS;
 	size_t _len_formattedString = formattedString ? strlen(formattedString) + 1 : 0;
 
-	ms_log_ocall_t* ms;
-	OCALLOC(ms, ms_log_ocall_t*, sizeof(*ms));
+	ms_sqlite3_log_ocall_t* ms;
+	OCALLOC(ms, ms_sqlite3_log_ocall_t*, sizeof(*ms));
 
 	ms->ms_errCode = errCode;
 	if (formattedString != NULL && sgx_is_within_enclave(formattedString, _len_formattedString)) {
@@ -87,6 +93,22 @@ sgx_status_t SGX_CDECL log_ocall(int errCode, char* formattedString)
 	}
 	
 	status = sgx_ocall(0, ms);
+
+
+	sgx_ocfree();
+	return status;
+}
+
+sgx_status_t SGX_CDECL sqlite3SystemError_ocall(sqlite3* db, int rc)
+{
+	sgx_status_t status = SGX_SUCCESS;
+
+	ms_sqlite3SystemError_ocall_t* ms;
+	OCALLOC(ms, ms_sqlite3SystemError_ocall_t*, sizeof(*ms));
+
+	ms->ms_db = SGX_CAST(sqlite3*, db);
+	ms->ms_rc = rc;
+	status = sgx_ocall(1, ms);
 
 
 	sgx_ocfree();
