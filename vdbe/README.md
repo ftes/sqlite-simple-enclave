@@ -15,12 +15,15 @@
 
 # Linked files (visual studio)
 - `global.c`
+- `util.c`
 
 
 # Copy individual functions
 - `sqlite3_initialize()` from `main.c` and additional `#include "mutex.h"`
 	- initializes memory -> has to be done again in VDBE enclave
 - most of `malloc.c`
+- most of `status.c`
+- most of `mem1.c`
 
 
 # Project config

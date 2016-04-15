@@ -51,6 +51,15 @@
     <ClCompile Include="..\sqlite\global.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\sqlite\util.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sqlite\mem1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sqlite\status.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vdbe_t.h">

@@ -187,6 +187,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\sqlite\global.c" />
+    <ClCompile Include="..\sqlite\mem1.c" />
+    <ClCompile Include="..\sqlite\status.c" />
+    <ClCompile Include="..\sqlite\util.c" />
     <ClCompile Include="main_copy.c" />
     <ClCompile Include="malloc.c" />
     <ClCompile Include="vdbe.c" />
